@@ -81,16 +81,10 @@ func ListenAndServe(conf *config.Config) error {
 	r.HandleFunc(conf.BaseURL+"/backend/stats", results.Stats)
 
 	// PHP frontend default values compatibility
-	r.HandleFunc(conf.BaseURL+"/empty.php", empty)
-	r.HandleFunc(conf.BaseURL+"/backend/empty.php", empty)
-	r.Get(conf.BaseURL+"/garbage.php", garbage)
-	r.Get(conf.BaseURL+"/backend/garbage.php", garbage)
-	r.Get(conf.BaseURL+"/getIP.php", getIP)
-	r.Get(conf.BaseURL+"/backend/getIP.php", getIP)
-	r.Post(conf.BaseURL+"/results/telemetry.php", results.Record)
-	r.Post(conf.BaseURL+"/backend/results/telemetry.php", results.Record)
-	r.HandleFunc(conf.BaseURL+"/stats.php", results.Stats)
-	r.HandleFunc(conf.BaseURL+"/backend/stats.php", results.Stats)
+	r.HandleFunc(conf.BaseURL+"/upload.php", empty)
+	r.HandleFunc(conf.BaseURL+"/speedtest/upload.php", empty)
+
+	r.Handle("/speedtest/*", http.StripPrefix("/speedtest/", http.FileServer(http.Dir("./web"))))
 
 	go listenProxyProtocol(conf, r)
 
