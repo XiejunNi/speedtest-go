@@ -10,6 +10,7 @@ FROM alpine:3.16
 RUN apk add --no-cache ca-certificates
 WORKDIR /app
 COPY --from=build_base /build/speedtest ./
+COPY web ./web
 COPY settings.toml ./
 
 USER nobody

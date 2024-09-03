@@ -92,6 +92,8 @@ func ListenAndServe(conf *config.Config) error {
 	r.HandleFunc(conf.BaseURL+"/stats.php", results.Stats)
 	r.HandleFunc(conf.BaseURL+"/backend/stats.php", results.Stats)
 
+	r.Handle("/speedtest/*", http.StripPrefix("/speedtest/", http.FileServer(http.Dir("./web"))))
+
 	go listenProxyProtocol(conf, r)
 
 	return startListener(conf, r)
