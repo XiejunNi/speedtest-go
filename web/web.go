@@ -22,6 +22,7 @@ import (
 
 	"github.com/librespeed/speedtest/config"
 	"github.com/librespeed/speedtest/results"
+	mid "github.com/librespeed/speedtest/web/middleware"
 )
 
 const (
@@ -41,6 +42,8 @@ func ListenAndServe(conf *config.Config) error {
 	r := chi.NewRouter()
 	r.Use(middleware.RealIP)
 	r.Use(middleware.GetHead)
+
+	r.Use(mid.Auth)
 
 	cs := cors.New(cors.Options{
 		AllowedOrigins: []string{"*"},
