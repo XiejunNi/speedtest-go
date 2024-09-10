@@ -25,17 +25,20 @@ func Auth(next http.Handler) http.Handler {
 		err, ret := ParseHSToken(token, "be3aae4fa5a14f52a194f82fa3cc606e")
 		if err != nil {
 			http.Error(w, "Unauthorized", http.StatusUnauthorized)
+			return
 		}
 
 		url, ok := ret["url"].(string)
 		if !ok {
 			http.Error(w, "Unauthorized", http.StatusUnauthorized)
+			return
 		}
 
 		log.Printf("parsed url %s", url)
 
 		if !contains(urls, url) {
 			http.Error(w, "Unauthorized", http.StatusUnauthorized)
+			return
 		}
 		next.ServeHTTP(w, r)
 	})
