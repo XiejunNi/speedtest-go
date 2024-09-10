@@ -34,7 +34,7 @@ func Auth(next http.Handler) http.Handler {
 			return
 		}
 
-		log.Printf("parsed url %s", url)
+		log.Printf("auth success")
 
 		if !contains(urls, url) {
 			http.Error(w, "Unauthorized", http.StatusUnauthorized)
