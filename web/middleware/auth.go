@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/golang-jwt/jwt/v5"
 )
@@ -17,12 +18,17 @@ var (
 	}
 )
 
+var (
+	ENV_SECRET_KEY = "SECRET"
+)
+
 // parse token from request header
 func Auth(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		token := r.Header.Get("Authorization")
 
-		err, ret := ParseHSToken(token, "be3aae4fa5a14f52a194f82fa3cc606e")
+		secret := os.Getenv(ENV_SECRET_KEY)
+		err, ret := ParseHSToken(token, secret)
 		if err != nil {
 			http.Error(w, "Unauthorized", http.StatusUnauthorized)
 			return
